@@ -551,6 +551,8 @@ long (*orig_custom_syscall)(void);
 static int init_function(void) {
 
 
+	mytable * iterator;
+
 	spin_lock(&calltable_lock);
 	set_addr_rw((unsigned long) sys_call_table);
 
@@ -565,12 +567,11 @@ static int init_function(void) {
 
 	spin_lock(&pidlist_lock);
 
-	int i;
-	for(i = 0; i < NR_syscalls; i++){
-		INIT_LIST_HEAD(&(table[i].my_list));
-		table[i].intercepted = 0;
-		table[i].monitored = 0;
-		table[i].listcount = 0;
+	for (iterator = table; iterator <= table + NR_syscalls; iterator++) {
+		iterator->monitored = 0;
+		iterator->intercepted = 0;
+		iterator->listcount = 0;
+		INIT_LIST_HEAD(&iterator->my_list);
 	}
 
 	spin_unlock(&pidlist_lock);
