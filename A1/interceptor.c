@@ -417,7 +417,7 @@ asmlinkage long my_syscall_deintercept(int syscall){
 	set_addr_rw((unsigned long)sys_call_table);
 	sys_call_table[syscall] =  table[syscall].f;
 	set_addr_ro((unsigned long)sys_call_table);
-fvcxzgzaZ
+	
 	spin_unlock(&calltable_lock);
 
 	spin_lock(&pidlist_lock);
