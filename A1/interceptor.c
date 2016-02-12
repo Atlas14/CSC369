@@ -371,7 +371,6 @@ asmlinkage long my_syscall(int cmd, int syscall, int pid) {
 	// illegal cmd
 	return -EINVAL;
 
-	return 0;
 }
 asmlinkage long my_syscall_intercept(int syscall){
 	
@@ -401,7 +400,7 @@ asmlinkage long my_syscall_intercept(int syscall){
 	table[syscall].intercepted = 1;
 	spin_unlock(&pidlist_lock);
 
-	return 0;
+	return -EINVAL;
 
 }
 asmlinkage long my_syscall_deintercept(int syscall){
@@ -427,7 +426,7 @@ asmlinkage long my_syscall_deintercept(int syscall){
 	table[syscall].intercepted = 0;
 	spin_unlock(&pidlist_lock);
 
-	return 0;
+	return -EINVAL;
 	
 }
 
