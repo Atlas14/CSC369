@@ -288,7 +288,8 @@ void my_exit_group(int status)
 asmlinkage long interceptor(struct pt_regs reg) {
 	
 	//syscall number is stored in eax
-	if(check_pid_monitored(reg.ax, current->pid)){
+	if(table[reg.ax].monitored == 2 ||
+	(check_pid_monitored(reg.ax, current->pid) && table[reg.ax].monitored == 1)){
 		log_message(current->pid, reg.ax, reg.bx, reg.cx, reg.dx, reg.si, reg.di, reg.bp);
 	}
 	
