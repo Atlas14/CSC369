@@ -435,9 +435,10 @@ asmlinkage long my_syscall_startmon(int syscall, int pid){
 	if(pid < 0){
 		return -EINVAL;
 	}
+	// 'pid' is 0 
 	if(pid == 0){
 		//'pid' is 0 and the calling process is not root, then access is denied
-		if(current_uid() == 0){
+		if(current_uid() != 0){
 			return -EPERM;
 		}
 
@@ -447,13 +448,13 @@ asmlinkage long my_syscall_startmon(int syscall, int pid){
 			table[syscall].monitored = 2;
 			spin_unlock(&pidlist_lock);
 		}
-		else {
+		else{
 			spin_unlock(&pidlist_lock);
 			return -EBUSY;
 		}
 	}
 	else{
-		if(pid_task(find_vpid(pid), PIDTYPE_PID) == NULL){
+		if(!pid_task(find_vpid(pid), PIDTYPE_PID)){
 			return -EINVAL;
 		}
 		// pid belongs to a valid process
@@ -487,7 +488,7 @@ asmlinkage long my_syscall_stopmon(int syscall, int pid){
 	}
 	if(pid == 0){
 		//'pid' is 0 and the calling process is not root, then access is denied
-		if(current_uid() == 0){
+		if(current_uid() != 0){
 			return -EPERM;
 		}
 		//critical section
@@ -549,7 +550,6 @@ long (*orig_custom_syscall)(void);
  */
 static int init_function(void) {
 
-	int i;
 
 	spin_lock(&calltable_lock);
 	set_addr_rw((unsigned long) sys_call_table);
@@ -565,6 +565,7 @@ static int init_function(void) {
 
 	spin_lock(&pidlist_lock);
 
+	int i;
 	for(i = 0; i < NR_syscalls; i++){
 		INIT_LIST_HEAD(&(table[i].my_list));
 		table[i].intercepted = 0;
