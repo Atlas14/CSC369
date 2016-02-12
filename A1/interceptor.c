@@ -383,8 +383,9 @@ asmlinkage long my_syscall_intercept(int syscall){
 	}
 	
 	//critical section
-	
+	spin_lock(&pidlist_lock);
 	table[syscall].f = sys_call_table[syscall];
+	spin_unlock(&pidlist_lock);
 
 	spin_lock(&calltable_lock);
 
@@ -417,7 +418,7 @@ asmlinkage long my_syscall_deintercept(int syscall){
 	set_addr_rw((unsigned long)sys_call_table);
 	sys_call_table[syscall] =  table[syscall].f;
 	set_addr_ro((unsigned long)sys_call_table);
-	
+
 	spin_unlock(&calltable_lock);
 
 	spin_lock(&pidlist_lock);
@@ -548,9 +549,9 @@ long (*orig_custom_syscall)(void);
  */
 static int init_function(void) {
 
-	int i = 0;
-	spin_lock(&calltable_lock);
+	mytable * iterator;
 
+	spin_lock(&calltable_lock);
 	set_addr_rw((unsigned long) sys_call_table);
 
 	orig_custom_syscall = sys_call_table[MY_CUSTOM_SYSCALL];
@@ -560,16 +561,15 @@ static int init_function(void) {
 	sys_call_table[__NR_exit_group] = & my_exit_group;
 
 	set_addr_ro((unsigned long) sys_call_table);
-
 	spin_unlock(&calltable_lock);
 
 	spin_lock(&pidlist_lock);
-	
-	for(i = 0; i < NR_syscalls; i++){
-		INIT_LIST_HEAD(&(table[i].my_list));
-		table[i].intercepted = 0;
-		table[i].monitored = 0;
-		table[i].listcount = 0;
+
+	for (iterator = table; iterator <= table + NR_syscalls; iterator++) {
+		iterator->monitored = 0;
+		iterator->intercepted = 0;
+		iterator->listcount = 0;
+		INIT_LIST_HEAD(&iterator->my_list);
 	}
 
 	spin_unlock(&pidlist_lock);
