@@ -465,8 +465,8 @@ asmlinkage long my_syscall_startmon(int syscall, int pid){
 			}
 			//critical section
 			spin_lock(&pidlist_lock);
-			
-			int check = add_pid_sysc(pid, syscall);
+			int check;
+			check = add_pid_sysc(pid, syscall);
 			if( check == 0 && table[syscall].monitored = 0){
 				table[syscall].monitored = 1;
 			}
