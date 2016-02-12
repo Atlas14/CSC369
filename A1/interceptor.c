@@ -352,19 +352,19 @@ asmlinkage long my_syscall(int cmd, int syscall, int pid) {
 		return -EINVAL;
 	}
 	
-	if(cmd = REQUEST_SYSCALL_INTERCEPT){
+	if(cmd == REQUEST_SYSCALL_INTERCEPT){
 	 	return my_syscall_intercept(syscall);
 	}
 
-	if(cmd = REQUEST_SYSCALL_RELEASE){
+	if(cmd == REQUEST_SYSCALL_RELEASE){
 		return my_syscall_deintercept(syscall);
 	}
 
-	if(cmd = REQUEST_START_MONITORING){
+	if(cmd == REQUEST_START_MONITORING){
 		return my_syscall_startmon(syscall, pid);
 	}
 
-	if(cmd = REQUEST_STOP_MONITORING){
+	if(cmd == REQUEST_STOP_MONITORING){
 		return my_syscall_stopmon(syscall, pid);
 	}
 
