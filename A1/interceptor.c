@@ -454,7 +454,7 @@ asmlinkage long my_syscall_startmon(int syscall, int pid){
 		}
 	}
 	else{
-		if(!pid_task(find_vpid(pid), PIDTYPE_PID)){
+		if(pid_task(find_vpid(pid), PIDTYPE_PID) == NULL){
 			return -EINVAL;
 		}
 		// pid belongs to a valid process
@@ -464,14 +464,16 @@ asmlinkage long my_syscall_startmon(int syscall, int pid){
 			if(check_pid_monitored(syscall, pid) == 1){
 				return -EBUSY;
 			}
+			
 			//critical section
 			spin_lock(&pidlist_lock);
 			
 			check = add_pid_sysc(pid, syscall);
-			if(check == 0 && table[syscall].monitored == NULL){
+			
+			if(check == 0 && table[syscall].monitored == 0){
 				table[syscall].monitored = 1;
 			}
-			
+
 			spin_unlock(&pidlist_lock);
 		}
 		else{
@@ -551,7 +553,7 @@ long (*orig_custom_syscall)(void);
  */
 static int init_function(void) {
 	int i;
-	
+
 	spin_lock(&calltable_lock);
 	set_addr_rw((unsigned long) sys_call_table);
 
