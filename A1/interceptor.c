@@ -466,6 +466,7 @@ asmlinkage long my_syscall_startmon(int syscall, int pid){
 			}
 			//critical section
 			spin_lock(&pidlist_lock);
+			
 			check = add_pid_sysc(pid, syscall);
 			if(check == 0 && table[syscall].monitored == NULL){
 				table[syscall].monitored = 1;
@@ -564,7 +565,8 @@ static int init_function(void) {
 	set_addr_ro((unsigned long) sys_call_table);
 	spin_unlock(&calltable_lock);
 
-	int i = 0;
+	int i;
+	
 	for(i = 0; i < NR_syscalls; i++){
 		INIT_LIST_HEAD(&(table[i].my_list));
 		table[i].intercepted = 0;
