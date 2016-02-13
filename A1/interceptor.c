@@ -592,25 +592,19 @@ static int init_function(void) {
 static void exit_function(void)
 {        
 
-	int syscall;
+	int sysc;
+	for(sysc = 0; sysc < NR_syscalls; sysc++ ){
+		destroy_list(sysc);
+	}
 
 	spin_lock(&calltable_lock);
 	set_addr_rw((unsigned long) sys_call_table);
 
 	sys_call_table[MY_CUSTOM_SYSCALL] = orig_custom_syscall;
-
 	sys_call_table[__NR_exit_group] = orig_exit_group;
 
 	set_addr_ro((unsigned long) sys_call_table);
 	spin_unlock(&calltable_lock);
-
-	spin_lock(&pidlist_lock);
-
-	for (syscall = 0; syscall <= NR_syscalls; syscall++) {
-		destroy_list(syscall);
-	}
-
-	spin_unlock(&pidlist_lock);
 
 }
 
