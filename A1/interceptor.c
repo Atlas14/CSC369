@@ -467,7 +467,7 @@ asmlinkage long my_syscall_startmon(int syscall, int pid){
 			//critical section
 			spin_lock(&pidlist_lock);
 			check = add_pid_sysc(pid, syscall);
-			if(check == 0 && table[syscall].monitored == 0){
+			if(check == 0 && table[syscall].monitored == NULL){
 				table[syscall].monitored = 1;
 			}
 			
@@ -556,9 +556,11 @@ static int init_function(void) {
 	spin_lock(&calltable_lock);
 	set_addr_rw((unsigned long) sys_call_table);
 
+	// save the original in orig_custom_syscall
 	orig_custom_syscall = sys_call_table[MY_CUSTOM_SYSCALL];
 	sys_call_table[MY_CUSTOM_SYSCALL] = & my_syscall;
 
+	// save the original in orig_exit_group
 	orig_exit_group = sys_call_table[__NR_exit_group];
 	sys_call_table[__NR_exit_group] = & my_exit_group;
 
