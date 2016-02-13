@@ -550,7 +550,8 @@ long (*orig_custom_syscall)(void);
  * - Ensure synchronization as needed.
  */
 static int init_function(void) {
-
+	int i;
+	
 	spin_lock(&calltable_lock);
 	set_addr_rw((unsigned long) sys_call_table);
 
@@ -565,8 +566,6 @@ static int init_function(void) {
 	set_addr_ro((unsigned long) sys_call_table);
 	spin_unlock(&calltable_lock);
 
-	int i;
-	
 	for(i = 0; i < NR_syscalls; i++){
 		INIT_LIST_HEAD(&(table[i].my_list));
 		table[i].intercepted = 0;
