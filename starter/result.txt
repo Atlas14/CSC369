@@ -1,0 +1,201 @@
+
+
+50 rand
+
+Hit rate: 71.6555
+
+Hit rate: 66.4848
+
+Hit rate: 99.6714
+
+Hit rate: 99.7065
+
+100 rand
+
+Hit rate: 74.1125
+
+Hit rate: 89.0829
+
+Hit rate: 99.7930
+
+Hit rate: 99.9003
+
+150 rand
+
+Hit rate: 74.5422
+
+Hit rate: 96.7449
+
+Hit rate: 99.8242
+
+Hit rate: 99.9296
+
+200 rand
+
+Hit rate: 74.6357
+
+Hit rate: 98.0846
+
+Hit rate: 99.8484
+
+Hit rate: 99.9432
+
+50 fifo
+
+Hit rate: 72.1880
+
+Hit rate: 62.0226
+
+Hit rate: 99.7448
+
+Hit rate: 99.7458
+
+100 fifo
+
+Hit rate: 74.2059
+
+Hit rate: 63.4956
+
+Hit rate: 99.8291
+
+Hit rate: 99.9094
+
+150 fifo
+
+Hit rate: 74.5889
+
+Hit rate: 98.8406
+
+Hit rate: 99.8331
+
+Hit rate: 99.9456
+
+200 fifo
+
+Hit rate: 74.6637
+
+Hit rate: 98.8582
+
+Hit rate: 99.8746
+
+Hit rate: 99.9492
+
+50 lru
+
+Hit rate: 73.9817
+
+Hit rate: 64.9218
+
+Hit rate: 99.7967
+
+Hit rate: 99.8351
+
+100 lru
+
+Hit rate: 74.8786
+
+Hit rate: 66.0930
+
+Hit rate: 99.8501
+
+Hit rate: 99.9305
+
+150 lru
+
+Hit rate: 74.9066
+
+Hit rate: 98.8920
+
+Hit rate: 99.8507
+
+Hit rate: 99.9501
+
+200 lru
+
+Hit rate: 74.9066
+
+Hit rate: 98.8924
+
+Hit rate: 99.8536
+
+Hit rate: 99.9501
+
+50 clock
+
+Hit rate: 73.8322
+
+Hit rate: 64.9215
+
+Hit rate: 99.7726
+
+Hit rate: 99.8275
+
+100 clock
+
+Hit rate: 74.8505
+
+Hit rate: 66.2500
+
+Hit rate: 99.8343
+
+Hit rate: 99.9281
+
+150 clock
+
+Hit rate: 74.8972
+
+Hit rate: 98.8317
+
+Hit rate: 99.8502
+
+Hit rate: 99.9498
+
+200 clock
+
+Hit rate: 74.8972
+
+Hit rate: 98.8920
+
+Hit rate: 99.8733
+
+Hit rate: 99.9496
+
+50 opt
+
+Hit rate: 74.9626
+
+Hit rate: 80.2086
+
+Hit rate: 99.8534
+
+Hit rate: 99.8941
+
+100 opt
+
+Hit rate: 75.3457
+
+Hit rate: 96.8737
+
+Hit rate: 99.8812
+
+Hit rate: 99.9465
+
+150 opt
+
+Hit rate: 75.3457
+
+Hit rate: 99.1033
+
+Hit rate: 99.9000
+
+Hit rate: 99.9501
+
+200 opt
+
+Hit rate: 75.3363
+
+Hit rate: 99.3509
+
+Hit rate: 99.9099
+
+Hit rate: 99.9498

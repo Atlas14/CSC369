@@ -204,13 +204,8 @@ int main(int argc, char *argv[]) {
 	swap_destroy();
 
 	printf("\n");
-	printf("Hit count: %d\n", hit_count);
-	printf("Miss count: %d\n", miss_count);
-	printf("Clean evictions: %d\n",evict_clean_count);
-	printf("Dirty evictions: %d\n",evict_dirty_count); 
-	printf("Total references : %d\n", ref_count);
 	printf("Hit rate: %.4f\n", (double)hit_count/ref_count * 100);
-	printf("Miss rate: %.4f\n", (double)miss_count/ref_count *100);
+
 		
 	return(0);
 }

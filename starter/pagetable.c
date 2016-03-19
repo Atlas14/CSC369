@@ -181,17 +181,17 @@ char *find_physpage(addr_t vaddr, char type) {
     
     if(!(p->frame & PG_ONSWAP)){
     // not on swap
-      init_frame(frame, vaddr);
       p->frame = frame << PAGE_SHIFT;
+      init_frame(frame, vaddr);
+      p->frame |= PG_DIRTY;
     }
     else{
     //on swap
       assert(swap_pagein(frame, p->swap_off) == 0);
       p->frame = frame << PAGE_SHIFT;
       p->frame |= PG_ONSWAP;
+      p->frame &= ~PG_DIRTY;
     }
-    
-    p->frame |= PG_DIRTY;
     // increasing miss count
     miss_count++;
 

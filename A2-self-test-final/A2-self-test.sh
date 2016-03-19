@@ -1,30 +1,11 @@
 #!/bin/bash
 
-GOLDENDIR=/h/u2/csc369h/winter/pub/public/A2-self-test-final
+GOLDENDIR=/Users/Ray/CSC369/A2-self-test-final
 USER=`whoami`
-TESTDIR=A2-self-test-dir
-CURDIR=`pwd`
 
-echo "CSC369 A2 Self-Tester Script"
-echo "****************************"
-echo "This self-tester allows you to confirm that the course team will be able to check out and compile your code. In addition, it also runs a subset of the test cases that will be used to grade your assignment."
-echo ""
-echo "Checking out SVN repo..."
 
-# Checkout repo
-svn co https://markus.cdf.toronto.edu/svn/csc369-2016-01/$USER/A2/  "$TESTDIR"
+cd /Users/Ray/CSC369/starter
 
-if [ $? -ne 0 ]; then
-	echo "Failed to check out repo!"
-	exit 1
-fi
-
-cd $TESTDIR
-
-if [ ! -e "Makefile" ]; then
-	echo "Didn't find Makefile in root testdir, trying /starter..."
-	cd starter
-fi
 
 # Run make
 echo "Running make..."
@@ -32,17 +13,8 @@ echo ""
 
 make
 
-if [ $? -ne 0 ]; then
-	echo "Failed to compile! This submission will receive a mark of 0."
-	cd $CURDIR
-	rm -rf $TESTDIR
-	exit 1;
-fi
 
-# Run traces and diff output
-echo ""
-echo "Make succeeded! Running traces and diffing output..."
-echo ""
+
 
 cp $GOLDENDIR/traces/* .
 
@@ -53,7 +25,7 @@ TOTAL=0
 for algo in rand opt fifo lru clock; do
 	MARK=0
 	for trace in 1_trace 4_trace; do
-		./sim -f $trace -m 8 -s 12 -a $algo | tail --lines=7 > $trace.out
+		./sim -f $trace -m 8 -s 12 -a $algo > $trace.out
 		diff -b $trace.out $GOLDENDIR/$algo/$trace.golden.out > /dev/null
 
 		if [ $? -eq 0 ]; then
@@ -75,5 +47,3 @@ echo "Total Mark: $TOTAL/$MAXTOTAL"
 
 rm -rf *trace*
 
-cd $CURDIR
-rm -rf $TESTDIR
