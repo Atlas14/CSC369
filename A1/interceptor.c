@@ -402,6 +402,10 @@ asmlinkage long my_syscall_intercept(int syscall){
 	return 0;
 
 }
+
+/*
+*
+*/
 asmlinkage long my_syscall_deintercept(int syscall){
 	// not the root
 	if(current_uid() != 0){
@@ -429,6 +433,9 @@ asmlinkage long my_syscall_deintercept(int syscall){
 	
 }
 
+/*
+*
+*/
 asmlinkage long my_syscall_startmon(int syscall, int pid){
 	int check;
 
@@ -448,6 +455,7 @@ asmlinkage long my_syscall_startmon(int syscall, int pid){
 			table[syscall].monitored = 2;
 			spin_unlock(&pidlist_lock);
 		}
+		// already monitored all
 		else{
 			spin_unlock(&pidlist_lock);
 			return -EBUSY;
@@ -460,6 +468,7 @@ asmlinkage long my_syscall_startmon(int syscall, int pid){
 		// pid belongs to a valid process
 		// calling process is root or 'pid' requested is owned by the calling process 
 		if(current_uid() == 0 || check_pid_from_list(current->pid, pid) == 0 ){
+			
 			//pid already been monitored 
 			if(check_pid_monitored(syscall, pid) == 1){
 				return -EBUSY;
@@ -468,8 +477,9 @@ asmlinkage long my_syscall_startmon(int syscall, int pid){
 			//critical section
 			spin_lock(&pidlist_lock);
 			
-			check = add_pid_sysc(pid, syscall);
 			
+			check = add_pid_sysc(pid, syscall);
+			// check if successfully add pid
 			if(check == 0 && table[syscall].monitored == 0){
 				table[syscall].monitored = 1;
 			}
@@ -485,6 +495,10 @@ asmlinkage long my_syscall_startmon(int syscall, int pid){
 	return 0;
 }
 
+
+/*
+*
+*/
 asmlinkage long my_syscall_stopmon(int syscall, int pid){
 	if(pid < 0){
 		return -EINVAL;
@@ -501,9 +515,10 @@ asmlinkage long my_syscall_stopmon(int syscall, int pid){
 			table[syscall].monitored = 0;
 			spin_unlock(&pidlist_lock);
 		} 
+		// monitored no pid
 		else {
 			spin_unlock(&pidlist_lock);
-			return -EBUSY;
+			return -EINVAL;
 		}
 	}
 	else{
@@ -513,6 +528,7 @@ asmlinkage long my_syscall_stopmon(int syscall, int pid){
 		// pid belongs to a valid process
 		// calling process is root or 'pid' requested is owned by the calling process 
 		if(current_uid() == 0 || check_pid_from_list(current->pid, pid) == 0 ){
+			
 			//pid has not been monitored 
 			if(check_pid_monitored(syscall, pid) == 0){
 				return -EINVAL;
@@ -530,6 +546,7 @@ asmlinkage long my_syscall_stopmon(int syscall, int pid){
 
 	return 0;
 }
+
 /**
  *
  */
