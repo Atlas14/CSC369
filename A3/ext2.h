@@ -21,7 +21,6 @@
 #define CSC369A3_EXT2_FS_H
 
 #define EXT2_BLOCK_SIZE 1024
-
 /*
  * Structure of the super block
  */
